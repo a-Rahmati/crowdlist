@@ -1,0 +1,41 @@
+Project knowledge: crowdlist
+
+- Purpose: Django/Wagtail project intended to list crowdfunding plans published on Iranian platforms. README currently only states this one-line goal.
+- Stack: Python 3.12 target in Docker, Django >=5.1,<5.2, Wagtail >=6.3,<6.4. Dependencies are only in requirements.txt.
+- Layout:
+  - crowdlist/: Django project package, global templates/static, URL routing, WSGI, split settings.
+  - home/: Wagtail Page app with HomePage model and initial migrations.
+  - search/: basic Wagtail page search view/template.
+  - db.sqlite3 exists locally and is used by default.
+- Settings:
+  - manage.py and crowdlist/wsgi.py default DJANGO_SETTINGS_MODULE to crowdlist.settings.dev.
+  - base.py defines installed Django/Wagtail apps, SQLite database at BASE_DIR/db.sqlite3, static/media roots, Wagtail DB search backend, and WAGTAIL_SITE_NAME = "crowdlist".
+  - dev.py sets DEBUG=True, hard-coded dev SECRET_KEY, ALLOWED_HOSTS=["*"], console email backend, and optional local.py override.
+  - production.py only sets DEBUG=False plus optional local.py override; it does not define production SECRET_KEY, ALLOWED_HOSTS, database, or email settings itself.
+- URLs:
+  - /django-admin/ is Django admin.
+  - /admin/ is Wagtail admin.
+  - /documents/ serves Wagtail documents.
+  - /search/ runs search.views.search.
+  - all other paths are delegated to Wagtail page serving.
+  - In DEBUG mode, static and media files are served by Django.
+- Models/content:
+  - home.models.HomePage subclasses wagtail.models.Page.
+  - HomePage has one RichTextField named body, exposed in Wagtail admin via FieldPanel.
+  - The current home_page.html ignores body and includes Wagtail's generated welcome_page.html.
+  - Migration 0002 deletes the default page with id=2, creates a Home page at path 00010001, and creates a default localhost Wagtail Site.
+- Search behavior:
+  - search.views.search reads GET query and page params.
+  - It searches Page.objects.live().search(search_query), paginates 10 per page, and renders search/search.html.
+  - Search promotions logging is scaffolded in comments but not enabled.
+- Static/templates:
+  - crowdlist/templates/base.html loads static, wagtailcore_tags, and wagtailuserbar; includes global css/crowdlist.css and js/crowdlist.js.
+  - crowdlist/static/css/crowdlist.css and crowdlist/static/js/crowdlist.js are currently empty.
+  - home/static/css/welcome_page.css styles the default Wagtail welcome page.
+- Docker/deploy:
+  - Dockerfile installs build deps, gunicorn 20.0.4, requirements, copies app to /app as user wagtail, runs collectstatic, then runs migrations and gunicorn on container start.
+  - Docker runtime still uses WSGI default settings module crowdlist.settings.dev unless overridden by environment.
+- Tests/tooling:
+  - No test files or pytest/unittest config found.
+  - No pyproject.toml/setup.cfg found.
+- Current repository state when inspected: git working tree was clean.
