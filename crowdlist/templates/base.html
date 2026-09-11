@@ -1,7 +1,7 @@
 {% load static wagtailcore_tags wagtailuserbar %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
     <head>
         <meta charset="utf-8" />
         <title>
@@ -34,7 +34,38 @@
     <body class="{% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
 
-        {% block content %}{% endblock %}
+        <header class="site-header">
+            <div class="site-header__inner">
+                <div class="site-header__primary">
+                    <a class="site-brand" href="/" aria-label="کراودلیست">
+                        <span class="site-brand__mark" aria-hidden="true">C</span>
+                        <span class="site-brand__text">کراودلیست</span>
+                    </a>
+
+                    <nav class="site-nav" aria-label="ناوبری اصلی">
+                        <a class="site-nav__link" href="#">فرصت‌های سرمایه‌گذاری</a>
+                        <a class="site-nav__link" href="#">سکوهای تأمین مالی</a>
+                    </nav>
+                </div>
+
+                <a class="site-auth-button" href="#">ورود یا ثبت‌نام</a>
+            </div>
+        </header>
+
+        <main class="site-main">
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="site-footer">
+            <div class="site-footer__inner">
+                <span class="site-footer__brand">کراودلیست</span>
+
+                <nav class="site-footer__nav" aria-label="پیوندهای تکمیلی">
+                    <a class="site-footer__link" href="#">درباره‌ی ما</a>
+                    <a class="site-footer__link" href="#">تماس با ما</a>
+                </nav>
+            </div>
+        </footer>
 
         {# Global javascript #}
         <script type="text/javascript" src="{% static 'js/crowdlist.js' %}"></script>

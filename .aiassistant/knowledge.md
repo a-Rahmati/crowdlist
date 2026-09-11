@@ -4,12 +4,14 @@ Project knowledge: crowdlist
 - Stack: Python 3.12 target in Docker, Django >=5.1,<5.2, Wagtail >=6.3,<6.4. Dependencies are only in requirements.txt.
 - Layout:
   - crowdlist/: Django project package, global templates/static, URL routing, WSGI, split settings.
+  - users/: Custom user model based on Django's AbstractUser, registered in Django admin.
   - home/: Wagtail Page app with HomePage model and initial migrations.
   - search/: basic Wagtail page search view/template.
   - db.sqlite3 exists locally and is used by default.
 - Settings:
   - manage.py and crowdlist/wsgi.py default DJANGO_SETTINGS_MODULE to crowdlist.settings.dev.
   - base.py defines installed Django/Wagtail apps, SQLite database at BASE_DIR/db.sqlite3, static/media roots, Wagtail DB search backend, and WAGTAIL_SITE_NAME = "crowdlist".
+  - AUTH_USER_MODEL is users.User. Use settings.AUTH_USER_MODEL in model relationships and get_user_model() when loading the user class.
   - dev.py sets DEBUG=True, hard-coded dev SECRET_KEY, ALLOWED_HOSTS=["*"], console email backend, and optional local.py override.
   - production.py only sets DEBUG=False plus optional local.py override; it does not define production SECRET_KEY, ALLOWED_HOSTS, database, or email settings itself.
 - URLs:

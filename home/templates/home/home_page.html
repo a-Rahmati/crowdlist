@@ -1,21 +1,45 @@
 {% extends "base.html" %}
-{% load static %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-homepage{% endblock %}
 
-{% block extra_css %}
-
-{% comment %}
-Delete the line below if you're just getting started and want to remove the welcome screen!
-{% endcomment %}
-<link rel="stylesheet" href="{% static 'css/welcome_page.css' %}">
-{% endblock extra_css %}
-
 {% block content %}
+<section class="home-hero" aria-labelledby="home-hero-title">
+    <div class="home-hero__media">
+        {% if page.hero %}
+            {% image page.hero fill-720x520 as hero_image %}
+            <img
+                class="home-hero__image"
+                src="{{ hero_image.url }}"
+                width="{{ hero_image.width }}"
+                height="{{ hero_image.height }}"
+                alt="{{ page.hero.title }}"
+            >
+        {% else %}
+            <div class="home-hero__placeholder" role="img" aria-label="تصویر فرصت‌های سرمایه‌گذاری">
+                <span>فرصت‌های سرمایه‌گذاری</span>
+            </div>
+        {% endif %}
+    </div>
 
-{% comment %}
-Delete the line below if you're just getting started and want to remove the welcome screen!
-{% endcomment %}
-{% include 'home/welcome_page.html' %}
+    <div class="home-hero__content">
+        <p class="home-hero__eyebrow">مرجع فرصت‌های تأمین مالی جمعی</p>
+        <h1 id="home-hero-title">{{ page.title }}</h1>
+        <p class="home-hero__lead">
+            فرصت‌های سرمایه‌گذاری و سکوهای تأمین مالی را در یک نمای روشن و قابل مقایسه دنبال کنید.
+        </p>
+        <div class="home-hero__actions" aria-label="اقدام‌های اصلی">
+            <a class="home-hero__button home-hero__button--primary" href="#">مشاهده فرصت‌ها</a>
+            <a class="home-hero__button home-hero__button--secondary" href="#">بررسی سکوها</a>
+        </div>
+    </div>
+</section>
 
+{% if page.body %}
+<section class="home-body" aria-label="معرفی کراودلیست">
+    <div class="home-body__content">
+        {{ page.body|richtext }}
+    </div>
+</section>
+{% endif %}
 {% endblock content %}

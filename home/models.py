@@ -5,9 +5,16 @@ from wagtail.fields import RichTextField
 
 
 class HomePage(Page):
+    hero = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
     body = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('body', classname="full"),
+        FieldPanel("hero"),
+        FieldPanel("body", classname="full"),
     ]
-
